@@ -10,6 +10,7 @@ import { connectDatabase } from './config/database';
 import { connectRedis } from './config/redis';
 import './models/index';
 import { loggerMiddleware } from './middlewares/logger.middleware';
+import { startCharacterSyncJob, syncCharacters } from './jobs/character-sync.job';
 
 const PORT = process.env.PORT ?? 4000;
 
@@ -28,6 +29,9 @@ async function bootstrap(): Promise<void> {
 
   const server = new ApolloServer({ typeDefs, resolvers });
   await server.start();
+
+  await syncCharacters();
+  startCharacterSyncJob();
 
   app.use('/graphql', expressMiddleware(server));
 

@@ -1,9 +1,9 @@
-import { Comment } from '../models/comment.model.js';
-import { MeasureTime } from '../decorators/measure-time.decorator.js';
+import { Comment } from '../models/comment.model';
+import { MeasureTime } from '../decorators/measure-time.decorator';
 import {
   CommentRepository,
   commentRepository,
-} from '../repositories/comment.repository.js';
+} from '../repositories/comment.repository';
 
 export class CommentService {
   private readonly repository: CommentRepository;

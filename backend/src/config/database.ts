@@ -18,8 +18,7 @@ export const sequelize = new Sequelize({
 export async function connectDatabase(): Promise<void> {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
-    console.log('PostgreSQL connected and models synced.');
+    console.log('PostgreSQL connected.');
   } catch (err) {
     console.error('Unable to connect to PostgreSQL:', err);
     throw err;

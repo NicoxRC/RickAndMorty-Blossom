@@ -9,6 +9,8 @@ import { resolvers } from './resolvers/index';
 import { connectDatabase } from './config/database';
 import { connectRedis } from './config/redis';
 import './models/index';
+import { loggerMiddleware } from './middlewares/logger.middleware';
+import { startCharacterSyncJob, syncCharacters } from './jobs/character-sync.job';
 
 const PORT = process.env.PORT ?? 4000;
 
@@ -19,6 +21,7 @@ async function bootstrap(): Promise<void> {
   const app = express();
   app.use(cors());
   app.use(express.json());
+  app.use(loggerMiddleware);
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -26,6 +29,9 @@ async function bootstrap(): Promise<void> {
 
   const server = new ApolloServer({ typeDefs, resolvers });
   await server.start();
+
+  await syncCharacters();
+  startCharacterSyncJob();
 
   app.use('/graphql', expressMiddleware(server));
 

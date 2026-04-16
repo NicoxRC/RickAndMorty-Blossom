@@ -7,6 +7,7 @@ import {
 } from '../models/character.model';
 
 const RICK_AND_MORTY_API = 'https://rickandmortyapi.com/api/character';
+const SEED_COUNT = 15;
 
 interface ApiCharacter {
   id: number;
@@ -26,61 +27,35 @@ interface ApiResponse {
 
 function toCharacterStatus(val: string): CharacterStatus {
   const valid: CharacterStatus[] = ['Alive', 'Dead', 'unknown'];
-  return valid.includes(val as CharacterStatus)
-    ? (val as CharacterStatus)
-    : 'unknown';
+  return valid.includes(val as CharacterStatus) ? (val as CharacterStatus) : 'unknown';
 }
 
 function toCharacterGender(val: string): CharacterGender {
   const valid: CharacterGender[] = ['Female', 'Male', 'Genderless', 'unknown'];
-  return valid.includes(val as CharacterGender)
-    ? (val as CharacterGender)
-    : 'unknown';
+  return valid.includes(val as CharacterGender) ? (val as CharacterGender) : 'unknown';
 }
 
 export async function syncCharacters(): Promise<void> {
   try {
-    const firstPage = await axios.get<ApiResponse>(
-      `${RICK_AND_MORTY_API}?page=1`,
-    );
-    const totalPages = firstPage.data.info.pages;
-    const firstPageResults = firstPage.data.results;
+    console.log(`[CharacterSyncJob] Starting sync at ${new Date().toISOString()}`);
 
-    const remainingPageNumbers = Array.from(
-      { length: totalPages - 1 },
-      (_, i) => i + 2,
-    );
-    const remainingPages = await Promise.all(
-      remainingPageNumbers.map((page) =>
-        axios
-          .get<ApiResponse>(`${RICK_AND_MORTY_API}?page=${page}`)
-          .then((res) => res.data.results),
-      ),
-    );
+    const { data } = await axios.get<ApiResponse>(`${RICK_AND_MORTY_API}?page=1`);
+    const characters = data.results.slice(0, SEED_COUNT);
 
-    const allCharacters: ApiCharacter[] = [
-      firstPageResults,
-      ...remainingPages,
-    ].flat();
+    for (const char of characters) {
+      await Character.upsert({
+        externalId: char.id,
+        name: char.name,
+        status: toCharacterStatus(char.status),
+        species: char.species,
+        gender: toCharacterGender(char.gender),
+        image: char.image,
+        origin: char.origin.name,
+        location: char.location.name,
+      });
+    }
 
-    await Promise.all(
-      allCharacters.map((char) =>
-        Character.upsert({
-          externalId: char.id,
-          name: char.name,
-          status: toCharacterStatus(char.status),
-          species: char.species,
-          gender: toCharacterGender(char.gender),
-          image: char.image,
-          origin: char.origin.name,
-          location: char.location.name,
-        }),
-      ),
-    );
-
-    console.log(
-      `[CharacterSyncJob] Sync completed at ${new Date().toISOString()} — ${allCharacters.length} characters upserted.`,
-    );
+    console.log(`[CharacterSyncJob] Sync completed at ${new Date().toISOString()} — ${characters.length} characters updated.`);
   } catch (err) {
     console.error('[CharacterSyncJob] Sync failed:', err);
     throw err;
@@ -89,9 +64,7 @@ export async function syncCharacters(): Promise<void> {
 
 export function startCharacterSyncJob(): void {
   cron.schedule('0 */12 * * *', () => {
-    syncCharacters().catch((err) =>
-      console.error('[CharacterSyncJob] Error:', err),
-    );
+    syncCharacters().catch((err) => console.error('[CharacterSyncJob] Scheduled sync error:', err));
   });
   console.log('[CharacterSyncJob] Scheduled every 12 hours.');
 }

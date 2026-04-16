@@ -18,7 +18,7 @@ const config: Config = {
   coverageReporters: ['text', 'lcov'],
   globals: {
     'ts-jest': {
-      tsconfig: 'tsconfig.json',
+      tsconfig: 'tsconfig.test.json',
     },
   },
 };

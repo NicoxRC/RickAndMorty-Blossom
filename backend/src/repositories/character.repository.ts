@@ -1,6 +1,11 @@
 import { Op, WhereOptions } from 'sequelize';
-import { Character, CharacterAttributes, CharacterGender, CharacterStatus } from '../models/character.model.js';
-import { MeasureTime } from '../decorators/measure-time.decorator.js';
+import {
+  Character,
+  CharacterAttributes,
+  CharacterGender,
+  CharacterStatus,
+} from '../models/character.model';
+import { MeasureTime } from '../decorators/measure-time.decorator';
 
 export interface CharacterFilters {
   status?: CharacterStatus;

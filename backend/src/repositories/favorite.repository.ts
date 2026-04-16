@@ -1,6 +1,6 @@
-import { Favorite } from '../models/favorite.model.js';
-import { Character } from '../models/character.model.js';
-import { MeasureTime } from '../decorators/measure-time.decorator.js';
+import { Favorite } from '../models/favorite.model';
+import { Character } from '../models/character.model';
+import { MeasureTime } from '../decorators/measure-time.decorator';
 
 export interface IFavoriteRepository {
   findAll(): Promise<Favorite[]>;

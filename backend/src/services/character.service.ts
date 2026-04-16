@@ -1,11 +1,11 @@
-import { Character } from '../models/character.model.js';
-import { MeasureTime } from '../decorators/measure-time.decorator.js';
-import { CacheService } from '../cache/cache.service.js';
+import { Character } from '../models/character.model';
+import { MeasureTime } from '../decorators/measure-time.decorator';
+import { CacheService } from '../cache/cache.service';
 import {
   CharacterRepository,
   CharacterFilters,
   characterRepository,
-} from '../repositories/character.repository.js';
+} from '../repositories/character.repository';
 
 export class CharacterService {
   private readonly repository: CharacterRepository;

@@ -1,5 +1,5 @@
-import { Comment } from '../models/comment.model.js';
-import { MeasureTime } from '../decorators/measure-time.decorator.js';
+import { Comment } from '../models/comment.model';
+import { MeasureTime } from '../decorators/measure-time.decorator';
 
 export interface ICommentRepository {
   findByCharacterId(characterId: number): Promise<Comment[]>;

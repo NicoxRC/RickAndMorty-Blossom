@@ -9,6 +9,7 @@ import cors from 'cors';
 // import { resolvers } from './resolvers';
 import { connectDatabase } from './config/database';
 import { connectRedis } from './config/redis';
+import './models';
 
 const PORT = process.env.PORT ?? 4000;
 

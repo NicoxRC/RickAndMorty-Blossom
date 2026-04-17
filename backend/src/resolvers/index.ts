@@ -1,18 +1,15 @@
 import { GraphQLError } from 'graphql';
-import { characterService } from '../services/character.service';
-import { commentService } from '../services/comment.service';
-import { favoriteService } from '../services/favorite.service';
-import type { CharacterFilters } from '../repositories/character.repository';
-import type { Character } from '../models/character.model';
-import type { Comment } from '../models/comment.model';
 
-interface CharacterFiltersInput {
-  name?: string;
-  status?: CharacterFilters['status'];
-  species?: string;
-  gender?: CharacterFilters['gender'];
-  origin?: string;
-}
+import { characterService } from '@/services/character.service';
+import { commentService } from '@/services/comment.service';
+import { favoriteService } from '@/services/favorite.service';
+
+import type { Character } from '@/models/character.model';
+import type { Comment } from '@/models/comment.model';
+import type {
+  CharacterFilters,
+  CharacterFiltersInput,
+} from '@/types/character.types';
 
 export const resolvers = {
   Query: {

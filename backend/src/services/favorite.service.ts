@@ -1,9 +1,9 @@
-import { Favorite } from '../models/favorite.model';
-import { MeasureTime } from '../decorators/measure-time.decorator';
+import { Favorite } from '@/models/favorite.model';
+import { MeasureTime } from '@/decorators/measure-time.decorator';
 import {
   FavoriteRepository,
   favoriteRepository,
-} from '../repositories/favorite.repository';
+} from '@/repositories/favorite.repository';
 
 export class FavoriteService {
   private readonly repository: FavoriteRepository;

@@ -1,11 +1,6 @@
-import { Comment } from '../models/comment.model';
-import { MeasureTime } from '../decorators/measure-time.decorator';
-
-export interface ICommentRepository {
-  findByCharacterId(characterId: number): Promise<Comment[]>;
-  create(characterId: number, content: string): Promise<Comment>;
-  softDelete(id: number): Promise<void>;
-}
+import { Comment } from '@/models';
+import { MeasureTime } from '@/decorators/measure-time.decorator';
+import { ICommentRepository } from '@/interfaces/comment.repository';
 
 export class CommentRepository implements ICommentRepository {
   @MeasureTime()

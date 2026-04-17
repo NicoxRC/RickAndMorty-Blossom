@@ -1,19 +1,11 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../config/database';
+import { DataTypes, Model } from 'sequelize';
 
-export interface CommentAttributes {
-  id: number;
-  characterId: number;
-  content: string;
-  deletedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { sequelize } from '@/config/database';
 
-export type CommentCreationAttributes = Optional<
+import type {
   CommentAttributes,
-  'id' | 'deletedAt' | 'createdAt' | 'updatedAt'
->;
+  CommentCreationAttributes,
+} from '@/types/comment.types';
 
 export class Comment
   extends Model<CommentAttributes, CommentCreationAttributes>

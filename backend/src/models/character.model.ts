@@ -1,28 +1,13 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../config/database';
+import { DataTypes, Model } from 'sequelize';
 
-export type CharacterStatus = 'Alive' | 'Dead' | 'unknown';
-export type CharacterGender = 'Female' | 'Male' | 'Genderless' | 'unknown';
+import { sequelize } from '@/config/database';
 
-export interface CharacterAttributes {
-  id: number;
-  externalId: number;
-  name: string;
-  status: CharacterStatus;
-  species: string;
-  gender: CharacterGender;
-  image: string;
-  origin: string;
-  location: string;
-  deletedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export type CharacterCreationAttributes = Optional<
+import type {
   CharacterAttributes,
-  'id' | 'deletedAt' | 'createdAt' | 'updatedAt'
->;
+  CharacterCreationAttributes,
+  CharacterGender,
+  CharacterStatus,
+} from '@/types/character.types';
 
 export class Character
   extends Model<CharacterAttributes, CharacterCreationAttributes>

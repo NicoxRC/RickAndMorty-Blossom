@@ -9,8 +9,9 @@ import { resolvers } from '../resolvers/index';
 import { characterService } from '../services/character.service';
 import { CharacterRepository } from '../repositories/character.repository';
 import { CacheService } from '../cache/cache.service';
+
 import type { Character } from '../models/character.model';
-import type { CharacterFilters } from '../repositories/character.repository';
+import type { CharacterFilters } from '../types/character.types';
 
 const { CharacterService } = jest.requireActual<
   typeof import('../services/character.service')

@@ -1,24 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { SOFT_DELETE_CHARACTER } from '@/graphql/mutations';
-import type { Character, CharacterStatus } from '@/types/index';
+import type { Character } from '@/types/index';
+import { StatusBadge } from '@/components/StatusBadge';
 
 interface CharacterCardProps {
   character: Character;
   onDelete: (id: number) => void;
 }
-
-const statusStyles: Record<CharacterStatus, string> = {
-  Alive: 'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/30',
-  Dead: 'bg-red-500/20 text-red-400 ring-1 ring-red-500/30',
-  unknown: 'bg-zinc-500/20 text-zinc-400 ring-1 ring-zinc-500/30',
-};
-
-const statusDot: Record<CharacterStatus, string> = {
-  Alive: 'bg-emerald-400',
-  Dead: 'bg-red-400',
-  unknown: 'bg-zinc-400',
-};
 
 export const CharacterCard = React.memo(function CharacterCard({
   character,
@@ -30,6 +20,7 @@ export const CharacterCard = React.memo(function CharacterCard({
   >(SOFT_DELETE_CHARACTER);
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     e.stopPropagation();
     const confirmed = window.confirm(`Delete ${character.name}?`);
     if (!confirmed) return;
@@ -41,7 +32,10 @@ export const CharacterCard = React.memo(function CharacterCard({
   };
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800 transition-all duration-200 hover:border-zinc-600 hover:shadow-xl hover:shadow-black/40 hover:-translate-y-0.5">
+    <Link
+      to={`/character/${character.id}`}
+      className="group relative flex flex-col overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800 transition-all duration-200 hover:border-zinc-600 hover:shadow-xl hover:shadow-black/40 hover:-translate-y-0.5"
+    >
       <div className="relative overflow-hidden aspect-square">
         <img
           src={character.image}
@@ -113,16 +107,9 @@ export const CharacterCard = React.memo(function CharacterCard({
             {character.species}
           </span>
 
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium shrink-0 ${statusStyles[character.status]}`}
-          >
-            <span
-              className={`w-1.5 h-1.5 rounded-full ${statusDot[character.status]}`}
-            />
-            {character.status}
-          </span>
+          <StatusBadge status={character.status} />
         </div>
       </div>
-    </article>
+    </Link>
   );
 });

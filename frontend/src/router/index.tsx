@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { App } from '@/App';
 import { CharactersPage } from '@/pages/CharactersPage';
+import { CharacterDetailPage } from '@/pages/CharacterDetailPage';
 
 export const router = createBrowserRouter([
   {
@@ -10,6 +11,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <CharactersPage />,
+      },
+      {
+        path: 'character/:id',
+        element: <CharacterDetailPage />,
       },
     ],
   },

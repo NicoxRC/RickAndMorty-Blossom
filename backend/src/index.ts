@@ -5,7 +5,6 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import { typeDefs } from './types/schema';
 import { resolvers } from './resolvers/index';
 import { connectDatabase } from './config/database';
 import { connectRedis } from './config/redis';
@@ -13,6 +12,7 @@ import './models/index';
 import { loggerMiddleware } from './middlewares/logger.middleware';
 import { startCharacterSyncJob } from './jobs/character-sync.job';
 import { swaggerSpec } from './config/swagger';
+import { typeDefs } from './schema';
 
 const PORT = process.env.PORT ?? 4000;
 
@@ -31,7 +31,7 @@ async function bootstrap(): Promise<void> {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const server = new ApolloServer({ typeDefs: typeDefs, resolvers });
   await server.start();
 
   startCharacterSyncJob();

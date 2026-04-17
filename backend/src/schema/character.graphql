@@ -1,0 +1,46 @@
+enum CharacterStatus {
+  Alive
+  Dead
+  unknown
+}
+
+enum CharacterGender {
+  Female
+  Male
+  Genderless
+  unknown
+}
+
+type Character {
+  id: Int!
+  externalId: Int!
+  name: String!
+  status: CharacterStatus!
+  species: String!
+  gender: CharacterGender!
+  image: String!
+  origin: String!
+  location: String!
+  deletedAt: String
+  createdAt: String!
+  updatedAt: String!
+  comments: [Comment!]!
+  isFavorite: Boolean!
+}
+
+input CharacterFiltersInput {
+  name: String
+  status: CharacterStatus
+  species: String
+  gender: CharacterGender
+  origin: String
+}
+
+type Query {
+  characters(filters: CharacterFiltersInput): [Character!]!
+  character(id: Int!): Character
+}
+
+type Mutation {
+  softDeleteCharacter(id: Int!): Boolean!
+}

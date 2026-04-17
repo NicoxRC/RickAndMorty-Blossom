@@ -1,0 +1,13 @@
+type Favorite {
+  id: Int!
+  characterId: Int!
+  createdAt: String!
+}
+
+type ToggleFavoriteResult {
+  added: Boolean!
+}
+
+extend type Mutation {
+  toggleFavorite(characterId: Int!): ToggleFavoriteResult!
+}

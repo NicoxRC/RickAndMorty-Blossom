@@ -1,25 +1,13 @@
 import { Op, WhereOptions } from 'sequelize';
-import {
-  Character,
+
+import { Character } from '@/models';
+import { MeasureTime } from '@/decorators/measure-time.decorator';
+import { ICharacterRepository } from '@/interfaces/character.repository';
+
+import type {
   CharacterAttributes,
-  CharacterGender,
-  CharacterStatus,
-} from '../models/character.model';
-import { MeasureTime } from '../decorators/measure-time.decorator';
-
-export interface CharacterFilters {
-  status?: CharacterStatus;
-  species?: string;
-  gender?: CharacterGender;
-}
-
-export interface ICharacterRepository {
-  findAll(filters: CharacterFilters): Promise<Character[]>;
-  findById(id: number): Promise<Character | null>;
-  findByExternalId(externalId: number): Promise<Character | null>;
-  softDelete(id: number): Promise<void>;
-  restore(id: number): Promise<void>;
-}
+  CharacterFilters,
+} from '@/types/character.types';
 
 export class CharacterRepository implements ICharacterRepository {
   @MeasureTime()

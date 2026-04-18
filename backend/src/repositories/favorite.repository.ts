@@ -1,13 +1,6 @@
-import { Favorite } from '../models/favorite.model';
-import { Character } from '../models/character.model';
-import { MeasureTime } from '../decorators/measure-time.decorator';
-
-export interface IFavoriteRepository {
-  findAll(): Promise<Favorite[]>;
-  findByCharacterId(characterId: number): Promise<Favorite | null>;
-  create(characterId: number): Promise<Favorite>;
-  delete(characterId: number): Promise<void>;
-}
+import { Character, Favorite } from '@/models';
+import { MeasureTime } from '@/decorators/measure-time.decorator';
+import { IFavoriteRepository } from '@/interfaces/favorite.repository';
 
 export class FavoriteRepository implements IFavoriteRepository {
   @MeasureTime()

@@ -9,8 +9,9 @@ import { resolvers } from '../resolvers/index';
 import { characterService } from '../services/character.service';
 import { CharacterRepository } from '../repositories/character.repository';
 import { CacheService } from '../cache/cache.service';
+
 import type { Character } from '../models/character.model';
-import type { CharacterFilters } from '../repositories/character.repository';
+import type { CharacterFilters } from '../types/character.types';
 
 const { CharacterService } = jest.requireActual<
   typeof import('../services/character.service')
@@ -39,7 +40,8 @@ const mockedGetCharacters =
     typeof characterService.getCharacters
   >;
 
-const callCharactersResolver = resolvers.Query.characters as (
+const callCharactersResolver = (resolvers.Query as Record<string, Function>)
+  .characters as (
   root: unknown,
   args: unknown,
   ctx: unknown,

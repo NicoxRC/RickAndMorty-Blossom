@@ -5,14 +5,15 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-import { typeDefs } from './types/schema';
-import { resolvers } from './resolvers/index';
+
+import './models/index';
 import { connectDatabase } from './config/database';
 import { connectRedis } from './config/redis';
-import './models/index';
 import { loggerMiddleware } from './middlewares/logger.middleware';
 import { startCharacterSyncJob } from './jobs/character-sync.job';
 import { swaggerSpec } from './config/swagger';
+import { resolvers } from './resolvers/index';
+import { typeDefs } from './schema';
 
 const PORT = process.env.PORT ?? 4000;
 

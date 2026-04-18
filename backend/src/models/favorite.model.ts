@@ -1,17 +1,11 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../config/database';
+import { DataTypes, Model } from 'sequelize';
 
-export interface FavoriteAttributes {
-  id: number;
-  characterId: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { sequelize } from '@/config/database';
 
-export type FavoriteCreationAttributes = Optional<
+import type {
   FavoriteAttributes,
-  'id' | 'createdAt' | 'updatedAt'
->;
+  FavoriteCreationAttributes,
+} from '@/types/favorite.types';
 
 export class Favorite
   extends Model<FavoriteAttributes, FavoriteCreationAttributes>

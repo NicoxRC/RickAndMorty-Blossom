@@ -13,6 +13,7 @@ export class Favorite
 {
   declare id: number;
   declare characterId: number;
+  declare userId: number;
   declare createdAt: Date;
   declare updatedAt: Date;
 }
@@ -27,9 +28,16 @@ Favorite.init(
     characterId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
       references: {
         model: 'characters',
+        key: 'id',
+      },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'users',
         key: 'id',
       },
       onDelete: 'CASCADE',
@@ -49,5 +57,11 @@ Favorite.init(
     paranoid: false,
     underscored: true,
     timestamps: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['character_id', 'user_id'],
+      },
+    ],
   },
 );

@@ -3,6 +3,7 @@ import { Optional } from 'sequelize';
 export interface FavoriteAttributes {
   id: number;
   characterId: number;
+  userId: number;
   createdAt: Date;
   updatedAt: Date;
 }

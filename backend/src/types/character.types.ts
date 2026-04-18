@@ -29,6 +29,20 @@ export interface CharacterAttributes {
   updatedAt: Date;
 }
 
+export interface CharacterRow {
+  external_id: number;
+  name: string;
+  status: string;
+  species: string;
+  gender: string;
+  image: string;
+  origin: string;
+  location: string;
+  deleted_at: null;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export type CharacterStatus = 'Alive' | 'Dead' | 'unknown';
 export type CharacterGender = 'Female' | 'Male' | 'Genderless' | 'unknown';
 

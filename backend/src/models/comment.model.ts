@@ -13,6 +13,7 @@ export class Comment
 {
   declare id: number;
   declare characterId: number;
+  declare userId: number;
   declare content: string;
   declare deletedAt: Date | null;
   declare createdAt: Date;
@@ -33,7 +34,15 @@ Comment.init(
         model: 'characters',
         key: 'id',
       },
-      onDelete: 'CASCADE',
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+      onDelete: 'SET NULL',
     },
     content: {
       type: DataTypes.TEXT,

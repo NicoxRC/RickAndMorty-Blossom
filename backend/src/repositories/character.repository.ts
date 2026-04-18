@@ -55,11 +55,7 @@ export class CharacterRepository implements ICharacterRepository {
   @MeasureTime()
   async softDelete(id: number): Promise<void> {
     try {
-      const character = await Character.findByPk(id);
-      if (!character) {
-        throw new Error(`Character with id ${id} not found`);
-      }
-      await character.destroy();
+      await Character.destroy({ where: { id } });
     } catch (err) {
       console.error('[CharacterRepository] softDelete error:', err);
       throw err;

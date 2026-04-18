@@ -1,0 +1,21 @@
+enum Role {
+  ADMIN
+  USER
+}
+
+type User {
+  id: Int!
+  name: String!
+  role: Role!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Query {
+  userById(id: Int!): User!
+  userByName(name: String!): User!
+}
+
+type Mutation {
+  createUser(name: String!, role: Role!): User!
+}

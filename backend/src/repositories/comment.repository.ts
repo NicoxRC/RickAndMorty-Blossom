@@ -14,8 +14,15 @@ export class CommentRepository implements ICommentRepository {
   }
 
   @MeasureTime()
-  async create(characterId: number, content: string): Promise<Comment> {
+  async create(
+    characterId: number,
+    content: string,
+    userId?: number,
+  ): Promise<Comment> {
     try {
+      if (userId) {
+        return await Comment.create({ characterId, content, userId });
+      }
       return await Comment.create({ characterId, content });
     } catch (err) {
       console.error('[CommentRepository] create error:', err);
@@ -26,11 +33,7 @@ export class CommentRepository implements ICommentRepository {
   @MeasureTime()
   async softDelete(id: number): Promise<void> {
     try {
-      const comment = await Comment.findByPk(id);
-      if (!comment) {
-        throw new Error(`Comment with id ${id} not found`);
-      }
-      await comment.destroy();
+      await Comment.destroy({ where: { id } });
     } catch (err) {
       console.error('[CommentRepository] softDelete error:', err);
       throw err;

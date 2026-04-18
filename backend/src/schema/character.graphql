@@ -25,7 +25,7 @@ type Character {
   createdAt: String!
   updatedAt: String!
   comments: [Comment!]!
-  isFavorite: Boolean!
+  isFavorite(userId: Int!): Boolean!
 }
 
 input CharacterFiltersInput {

@@ -23,9 +23,13 @@ export class CommentService {
   }
 
   @MeasureTime()
-  async addComment(characterId: number, content: string): Promise<Comment> {
+  async addComment(
+    characterId: number,
+    content: string,
+    userId?: number,
+  ): Promise<Comment> {
     try {
-      return await this.repository.create(characterId, content);
+      return await this.repository.create(characterId, content, userId);
     } catch (err) {
       console.error('[CommentService] addComment error:', err);
       throw err;

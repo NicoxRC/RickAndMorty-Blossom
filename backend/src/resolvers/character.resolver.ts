@@ -35,7 +35,11 @@ export const characterResolvers = {
       { id }: { id: number },
     ): Promise<Character | null> => {
       try {
-        return await characterService.getCharacterById(id);
+        const character = await characterService.getCharacterById(id);
+        if (!character) {
+          throw new GraphQLError('Character not found');
+        }
+        return character;
       } catch (err) {
         throw new GraphQLError(
           err instanceof Error ? err.message : 'Failed to fetch character',
@@ -50,6 +54,10 @@ export const characterResolvers = {
       { id }: { id: number },
     ): Promise<boolean> => {
       try {
+        const character = await characterService.getCharacterById(id);
+        if (!character) {
+          throw new GraphQLError('Character not found');
+        }
         await characterService.softDeleteCharacter(id);
         return true;
       } catch (err) {
@@ -73,10 +81,16 @@ export const characterResolvers = {
       }
     },
 
-    isFavorite: async (parent: Character): Promise<boolean> => {
+    isFavorite: async (
+      parent: Character,
+      { userId }: { userId: number },
+    ): Promise<boolean> => {
       try {
-        const favorites = await favoriteService.getFavorites();
-        return favorites.some((f) => f.characterId === parent.id);
+        const favorite = await favoriteService.getFavoriteByUserAndCharacterId(
+          userId,
+          parent.id,
+        );
+        return !!favorite;
       } catch (err) {
         throw new GraphQLError(
           err instanceof Error

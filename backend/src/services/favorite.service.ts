@@ -1,4 +1,4 @@
-import { Favorite } from '@/models/favorite.model';
+import { Favorite } from '@/models';
 import { MeasureTime } from '@/decorators/measure-time.decorator';
 import {
   FavoriteRepository,

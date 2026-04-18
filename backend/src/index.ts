@@ -7,13 +7,13 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 
 import './models/index';
-import { resolvers } from '@/resolvers/index';
-import { connectDatabase } from '@/config/database';
-import { connectRedis } from '@/config/redis';
-import { loggerMiddleware } from '@/middlewares/logger.middleware';
-import { startCharacterSyncJob } from '@/jobs/character-sync.job';
-import { swaggerSpec } from '@/config/swagger';
-import { typeDefs } from '@/schema';
+import { connectDatabase } from './config/database';
+import { connectRedis } from './config/redis';
+import { loggerMiddleware } from './middlewares/logger.middleware';
+import { startCharacterSyncJob } from './jobs/character-sync.job';
+import { swaggerSpec } from './config/swagger';
+import { resolvers } from './resolvers/index';
+import { typeDefs } from './schema';
 
 const PORT = process.env.PORT ?? 4000;
 

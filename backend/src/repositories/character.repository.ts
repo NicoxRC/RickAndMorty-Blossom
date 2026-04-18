@@ -1,8 +1,8 @@
 import { Op, WhereOptions } from 'sequelize';
 
-import { ICharacterRepository } from '@/interfaces/character.repository';
-import { MeasureTime } from '@/decorators/measure-time.decorator';
 import { Character } from '@/models';
+import { MeasureTime } from '@/decorators/measure-time.decorator';
+import { ICharacterRepository } from '@/interfaces/character.repository';
 
 import type {
   CharacterAttributes,

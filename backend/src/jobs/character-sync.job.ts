@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import axios from 'axios';
 
-import { Character } from '@/models/character.model';
+import { Character } from '@/models';
 
 import type { CharacterGender, CharacterStatus } from '@/types/character.types';
 import type { ApiResponse } from '@/types/rickmorty-api.types';

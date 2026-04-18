@@ -1,4 +1,4 @@
-import { Character } from '@/models/character.model';
+import { Character } from '@/models';
 import { MeasureTime } from '@/decorators/measure-time.decorator';
 import { CacheService } from '@/cache/cache.service';
 import {

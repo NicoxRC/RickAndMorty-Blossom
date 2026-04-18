@@ -40,7 +40,8 @@ const mockedGetCharacters =
     typeof characterService.getCharacters
   >;
 
-const callCharactersResolver = resolvers.Query.characters as (
+const callCharactersResolver = (resolvers.Query as Record<string, Function>)
+  .characters as (
   root: unknown,
   args: unknown,
   ctx: unknown,

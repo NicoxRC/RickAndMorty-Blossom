@@ -1,4 +1,4 @@
-import { getRedisClient } from '../config/redis';
+import { getRedisClient } from '@/config/redis';
 
 export class CacheService {
   buildKey(prefix: string, payload: object): string {

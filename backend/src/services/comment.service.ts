@@ -1,4 +1,4 @@
-import { Comment } from '@/models/comment.model';
+import { Comment } from '@/models';
 import { MeasureTime } from '@/decorators/measure-time.decorator';
 import {
   CommentRepository,

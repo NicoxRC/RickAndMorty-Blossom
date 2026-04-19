@@ -7,15 +7,9 @@ import type {
   CharacterStatus,
   CharacterGender,
   CharacterFiltersInput,
+  GetCharactersData,
+  GetCharactersVars,
 } from '@/types/index';
-
-interface GetCharactersData {
-  characters: Character[];
-}
-
-interface GetCharactersVars {
-  filters?: CharacterFiltersInput;
-}
 
 const selectClass =
   'w-full rounded-xl bg-zinc-900 border border-zinc-700 text-white text-sm px-3 py-2 outline-none ' +

@@ -3,33 +3,15 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_CHARACTER_DETAIL } from '@/graphql/queries';
 import { TOGGLE_FAVORITE, ADD_COMMENT } from '@/graphql/mutations';
-import type { Character, Comment, ToggleFavoriteResult } from '@/types/index';
+import type {
+  GetCharacterDetailData,
+  GetCharacterDetailVars,
+  ToggleFavoriteData,
+  ToggleFavoriteVars,
+  AddCommentData,
+  AddCommentVars,
+} from '@/types/index';
 import { StatusBadge } from '@/components/StatusBadge';
-
-interface GetCharacterDetailData {
-  character: Character;
-}
-
-interface GetCharacterDetailVars {
-  id: number;
-}
-
-interface ToggleFavoriteData {
-  toggleFavorite: ToggleFavoriteResult;
-}
-
-interface ToggleFavoriteVars {
-  characterId: number;
-}
-
-interface AddCommentData {
-  addComment: Comment;
-}
-
-interface AddCommentVars {
-  characterId: number;
-  content: string;
-}
 
 function formatDate(value: string): string {
   const ms = Number(value);

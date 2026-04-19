@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_CHARACTERS = gql`
-  query GetCharacters($filters: CharacterFiltersInput) {
+  query GetCharacters($filters: CharacterFiltersInput, $userId: Int!) {
     characters(filters: $filters) {
       id
       name
@@ -12,13 +12,13 @@ export const GET_CHARACTERS = gql`
       origin
       location
       deletedAt
-      isFavorite
+      isFavorite(userId: $userId)
     }
   }
 `;
 
 export const GET_CHARACTER_DETAIL = gql`
-  query GetCharacterDetail($id: Int!) {
+  query GetCharacterDetail($id: Int!, $userId: Int!) {
     character(id: $id) {
       id
       externalId
@@ -32,12 +32,37 @@ export const GET_CHARACTER_DETAIL = gql`
       deletedAt
       createdAt
       updatedAt
-      isFavorite
+      isFavorite(userId: $userId)
       comments {
         id
+        userId
         content
         createdAt
       }
+    }
+  }
+`;
+
+export const GET_USER_BY_ID = gql`
+  query GetUserById($id: Int!) {
+    userById(id: $id) {
+      id
+      name
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const GET_USER_BY_NAME = gql`
+  query GetUserByName($name: String!) {
+    userByName(name: $name) {
+      id
+      name
+      role
+      createdAt
+      updatedAt
     }
   }
 `;

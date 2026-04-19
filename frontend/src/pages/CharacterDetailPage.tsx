@@ -12,6 +12,8 @@ import type {
   AddCommentVars,
 } from '@/types/index';
 import { StatusBadge } from '@/components/StatusBadge';
+import { useAuth } from '@/context/AuthContext';
+import { useError } from '@/context/ErrorContext';
 
 function formatDate(value: string): string {
   const ms = Number(value);
@@ -28,20 +30,25 @@ export function CharacterDetailPage() {
   const { id } = useParams<{ id: string }>();
   const characterId = parseInt(id ?? '', 10);
 
+  const { user } = useAuth();
+  const { showError } = useError();
+
   const [commentText, setCommentText] = useState('');
+
+  const userId = user?.id ?? 0;
 
   const { data, loading, error } = useQuery<
     GetCharacterDetailData,
     GetCharacterDetailVars
   >(GET_CHARACTER_DETAIL, {
-    variables: { id: characterId },
+    variables: { id: characterId, userId },
     skip: !id,
   });
 
   const [toggleFavorite] = useMutation<ToggleFavoriteData, ToggleFavoriteVars>(
     TOGGLE_FAVORITE,
     {
-      variables: { characterId },
+      variables: { characterId, userId },
       optimisticResponse: data?.character
         ? {
             toggleFavorite: { added: !data.character.isFavorite },
@@ -50,12 +57,12 @@ export function CharacterDetailPage() {
       update(cache) {
         const cached = cache.readQuery<GetCharacterDetailData>({
           query: GET_CHARACTER_DETAIL,
-          variables: { id: characterId },
+          variables: { id: characterId, userId },
         });
         if (!cached) return;
         cache.writeQuery<GetCharacterDetailData>({
           query: GET_CHARACTER_DETAIL,
-          variables: { id: characterId },
+          variables: { id: characterId, userId },
           data: {
             character: {
               ...cached.character,
@@ -75,12 +82,12 @@ export function CharacterDetailPage() {
       if (!mutationData) return;
       const cached = cache.readQuery<GetCharacterDetailData>({
         query: GET_CHARACTER_DETAIL,
-        variables: { id: characterId },
+        variables: { id: characterId, userId },
       });
       if (!cached) return;
       cache.writeQuery<GetCharacterDetailData>({
         query: GET_CHARACTER_DETAIL,
-        variables: { id: characterId },
+        variables: { id: characterId, userId },
         data: {
           character: {
             ...cached.character,
@@ -95,6 +102,10 @@ export function CharacterDetailPage() {
   });
 
   const handleToggleFavorite = () => {
+    if (!user) {
+      showError('Login required to manage favorites', 'auth');
+      return;
+    }
     void toggleFavorite();
   };
 

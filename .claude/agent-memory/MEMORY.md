@@ -1,2 +1,0 @@
-- [Backend scaffold status](Architecture/project_backend_scaffold.md) — Backend fully scaffolded (Step 2); key decisions: Apollo Server v4, Sequelize paranoid soft-delete, Cache-Aside, @MeasureTime decorator
-- [Frontend scaffold status](Architecture/project_frontend_scaffold.md) — Frontend fully scaffolded (Step 3); Vite 5 + React 18, Apollo Client 3, React Router v6, Vitest inline config, Tailwind v3

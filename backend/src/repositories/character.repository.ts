@@ -15,6 +15,9 @@ export class CharacterRepository implements ICharacterRepository {
     try {
       const where: WhereOptions<CharacterAttributes> = {};
 
+      if (filters.name !== undefined) {
+        where.name = { [Op.iLike]: `%${filters.name}%` };
+      }
       if (filters.status !== undefined) {
         where.status = filters.status;
       }
@@ -23,6 +26,9 @@ export class CharacterRepository implements ICharacterRepository {
       }
       if (filters.gender !== undefined) {
         where.gender = filters.gender;
+      }
+      if (filters.origin !== undefined) {
+        where.origin = { [Op.iLike]: `%${filters.origin}%` };
       }
 
       return await Character.findAll({ where });

@@ -20,9 +20,11 @@ export const characterResolvers = {
     ): Promise<Character[]> => {
       try {
         const serviceFilters: CharacterFilters = {
+          name: filters?.name,
           status: filters?.status,
           species: filters?.species,
           gender: filters?.gender,
+          origin: filters?.origin,
         };
         return await characterService.getCharacters(serviceFilters);
       } catch (err) {

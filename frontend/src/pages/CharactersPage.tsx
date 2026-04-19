@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { CharacterCard } from '@/components/CharacterCard';
 import { GET_CHARACTERS } from '@/graphql/queries';
+import { useAuth } from '@/context/AuthContext';
 import type {
   Character,
   CharacterStatus,
@@ -20,6 +21,7 @@ const inputClass =
   'placeholder:text-zinc-500 focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40 transition-all duration-200';
 
 export function CharactersPage() {
+  const { user } = useAuth();
   const [status, setStatus] = useState<CharacterStatus | ''>('');
   const [speciesRaw, setSpeciesRaw] = useState('');
   const [debouncedSpecies, setDebouncedSpecies] = useState('');
@@ -43,7 +45,8 @@ export function CharactersPage() {
     GetCharactersData,
     GetCharactersVars
   >(GET_CHARACTERS, {
-    variables: { filters },
+    variables: { filters, userId: user?.id ?? 0 },
+    fetchPolicy: 'network-only',
   });
 
   const handleDelete = () => {

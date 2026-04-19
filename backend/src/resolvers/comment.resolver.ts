@@ -5,6 +5,17 @@ import { commentService } from '@/services/comment.service';
 import { Character, User, type Comment } from '@/models';
 
 export const commentResolvers = {
+  Comment: {
+    userName: async (parent: Comment): Promise<string | null> => {
+      if (!parent.userId) return null;
+      try {
+        const user = await User.findByPk(parent.userId);
+        return user?.name ?? null;
+      } catch {
+        return null;
+      }
+    },
+  },
   Mutation: {
     addComment: async (
       _: unknown,

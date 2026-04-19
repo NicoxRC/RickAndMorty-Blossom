@@ -34,6 +34,7 @@ export function CharacterDetailPage() {
   const { showError } = useError();
 
   const [commentText, setCommentText] = useState('');
+  const [localIsFavorite, setLocalIsFavorite] = useState<boolean | null>(null);
 
   const userId = user?.id ?? 0;
 
@@ -43,35 +44,17 @@ export function CharacterDetailPage() {
   >(GET_CHARACTER_DETAIL, {
     variables: { id: characterId, userId },
     skip: !id,
+    fetchPolicy: 'network-only',
+    onCompleted(result) {
+      setLocalIsFavorite(result.character?.isFavorite ?? false);
+    },
   });
+
+  const isFavorite = localIsFavorite ?? data?.character?.isFavorite ?? false;
 
   const [toggleFavorite] = useMutation<ToggleFavoriteData, ToggleFavoriteVars>(
     TOGGLE_FAVORITE,
-    {
-      variables: { characterId, userId },
-      optimisticResponse: data?.character
-        ? {
-            toggleFavorite: { added: !data.character.isFavorite },
-          }
-        : undefined,
-      update(cache) {
-        const cached = cache.readQuery<GetCharacterDetailData>({
-          query: GET_CHARACTER_DETAIL,
-          variables: { id: characterId, userId },
-        });
-        if (!cached) return;
-        cache.writeQuery<GetCharacterDetailData>({
-          query: GET_CHARACTER_DETAIL,
-          variables: { id: characterId, userId },
-          data: {
-            character: {
-              ...cached.character,
-              isFavorite: !cached.character.isFavorite,
-            },
-          },
-        });
-      },
-    },
+    { variables: { characterId, userId } },
   );
 
   const [addComment, { loading: addingComment }] = useMutation<
@@ -106,14 +89,16 @@ export function CharacterDetailPage() {
       showError('Login required to manage favorites', 'auth');
       return;
     }
-    void toggleFavorite();
+    const next = !isFavorite;
+    setLocalIsFavorite(next);
+    void toggleFavorite().catch(() => setLocalIsFavorite(!next));
   };
 
   const handleAddComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmed = commentText.trim();
     if (!trimmed) return;
-    void addComment({ variables: { characterId, content: trimmed } });
+    void addComment({ variables: { characterId, content: trimmed, ...(user ? { userId: user.id } : {}) } });
   };
 
   if (loading) {
@@ -196,7 +181,7 @@ export function CharacterDetailPage() {
             type="button"
             onClick={handleToggleFavorite}
             aria-label={
-              character.isFavorite
+              isFavorite
                 ? 'Remove from favorites'
                 : 'Add to favorites'
             }
@@ -205,7 +190,7 @@ export function CharacterDetailPage() {
               hover:border-amber-500/50 hover:bg-amber-500/10
               transition-all duration-200"
           >
-            {character.isFavorite ? (
+            {isFavorite ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-5 h-5 text-amber-400"
@@ -291,12 +276,18 @@ export function CharacterDetailPage() {
                 <p className="text-sm text-zinc-200 leading-relaxed">
                   {comment.content}
                 </p>
-                <time
-                  dateTime={comment.createdAt}
-                  className="text-xs text-zinc-500"
-                >
-                  {formatDate(comment.createdAt)}
-                </time>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-xs font-medium text-violet-400">
+                    {comment.userName ?? 'Anónimo'}
+                  </span>
+                  <span className="text-zinc-600 text-xs">·</span>
+                  <time
+                    dateTime={comment.createdAt}
+                    className="text-xs text-zinc-500"
+                  >
+                    {formatDate(comment.createdAt)}
+                  </time>
+                </div>
               </li>
             ))}
           </ul>

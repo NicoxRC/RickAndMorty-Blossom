@@ -36,6 +36,7 @@ export const GET_CHARACTER_DETAIL = gql`
       comments {
         id
         userId
+        userName
         content
         createdAt
       }

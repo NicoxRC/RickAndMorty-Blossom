@@ -70,9 +70,8 @@ export function ErrorModal() {
   );
 
   const handleSignInClick = useCallback(() => {
-    clearError();
     setIsUserModalOpen(true);
-  }, [clearError]);
+  }, []);
 
   if (!error) return null;
 
@@ -176,7 +175,7 @@ export function ErrorModal() {
 
       <UserModal
         isOpen={isUserModalOpen}
-        onClose={() => setIsUserModalOpen(false)}
+        onClose={() => { setIsUserModalOpen(false); clearError(); }}
       />
     </>
   );

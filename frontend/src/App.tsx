@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { ErrorProvider } from '@/context/ErrorContext';
 import { UserModal } from '@/components/UserModal';
+import { ErrorModal } from '@/components/ErrorModal';
 
 function NavBar() {
   const { user } = useAuth();
@@ -92,12 +94,15 @@ function RolePill({ role }: { role: 'ADMIN' | 'USER' }) {
 export function App() {
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-zinc-950 text-gray-900">
-        <NavBar />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Outlet />
-        </main>
-      </div>
+      <ErrorProvider>
+        <div className="min-h-screen bg-zinc-950 text-gray-900">
+          <NavBar />
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <Outlet />
+          </main>
+        </div>
+        <ErrorModal />
+      </ErrorProvider>
     </AuthProvider>
   );
 }

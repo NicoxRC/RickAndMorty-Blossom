@@ -3,6 +3,7 @@ import { Optional } from 'sequelize';
 export interface CommentAttributes {
   id: number;
   characterId: number;
+  userId?: number | null;
   content: string;
   deletedAt: Date | null;
   createdAt: Date;

@@ -1,24 +1,15 @@
-import { Character, Favorite } from '@/models';
+import { Favorite } from '@/models';
 import { MeasureTime } from '@/decorators/measure-time.decorator';
 import { IFavoriteRepository } from '@/interfaces/favorite.repository';
 
 export class FavoriteRepository implements IFavoriteRepository {
   @MeasureTime()
-  async findAll(): Promise<Favorite[]> {
+  async findByCharacterAndUserId(
+    userId: number,
+    characterId: number,
+  ): Promise<Favorite | null> {
     try {
-      return await Favorite.findAll({
-        include: [{ model: Character, as: 'character' }],
-      });
-    } catch (err) {
-      console.error('[FavoriteRepository] findAll error:', err);
-      throw err;
-    }
-  }
-
-  @MeasureTime()
-  async findByCharacterId(characterId: number): Promise<Favorite | null> {
-    try {
-      return await Favorite.findOne({ where: { characterId } });
+      return await Favorite.findOne({ where: { userId, characterId } });
     } catch (err) {
       console.error('[FavoriteRepository] findByCharacterId error:', err);
       throw err;
@@ -26,9 +17,9 @@ export class FavoriteRepository implements IFavoriteRepository {
   }
 
   @MeasureTime()
-  async create(characterId: number): Promise<Favorite> {
+  async create(userId: number, characterId: number): Promise<Favorite> {
     try {
-      return await Favorite.create({ characterId });
+      return await Favorite.create({ userId, characterId });
     } catch (err) {
       console.error('[FavoriteRepository] create error:', err);
       throw err;
@@ -36,9 +27,9 @@ export class FavoriteRepository implements IFavoriteRepository {
   }
 
   @MeasureTime()
-  async delete(characterId: number): Promise<void> {
+  async delete(userId: number, characterId: number): Promise<void> {
     try {
-      await Favorite.destroy({ where: { characterId } });
+      await Favorite.destroy({ where: { userId, characterId } });
     } catch (err) {
       console.error('[FavoriteRepository] delete error:', err);
       throw err;

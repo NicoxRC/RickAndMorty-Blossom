@@ -1,6 +1,7 @@
 type Favorite {
   id: Int!
   characterId: Int!
+  userId: Int!
   createdAt: String!
 }
 
@@ -9,5 +10,5 @@ type ToggleFavoriteResult {
 }
 
 extend type Mutation {
-  toggleFavorite(characterId: Int!): ToggleFavoriteResult!
+  toggleFavorite(characterId: Int!, userId: Int!): ToggleFavoriteResult!
 }

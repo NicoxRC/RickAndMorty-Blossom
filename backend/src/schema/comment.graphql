@@ -1,11 +1,12 @@
 type Comment {
   id: Int!
   characterId: Int!
+  userId: Int
   content: String!
   createdAt: String!
   updatedAt: String!
 }
 
 extend type Mutation {
-  addComment(characterId: Int!, content: String!): Comment!
+  addComment(characterId: Int!, content: String!, userId: Int): Comment!
 }

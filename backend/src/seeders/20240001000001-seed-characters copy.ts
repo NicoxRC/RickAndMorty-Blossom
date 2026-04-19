@@ -1,39 +1,13 @@
-import { QueryInterface } from 'sequelize';
 import axios from 'axios';
+import { QueryInterface } from 'sequelize';
 
-interface RickAndMortyCharacter {
-  id: number;
-  name: string;
-  status: string;
-  species: string;
-  gender: string;
-  image: string;
-  origin: { name: string };
-  location: { name: string };
-}
-
-interface RickAndMortyApiResponse {
-  results: RickAndMortyCharacter[];
-}
-
-interface CharacterRow {
-  external_id: number;
-  name: string;
-  status: string;
-  species: string;
-  gender: string;
-  image: string;
-  origin: string;
-  location: string;
-  deleted_at: null;
-  created_at: Date;
-  updated_at: Date;
-}
+import type { ApiResponse } from '@/types/rickmorty-api.types';
+import type { CharacterRow } from '@/types/character.types';
 
 module.exports = {
   async up(queryInterface: QueryInterface): Promise<void> {
-    const response = await axios.get<RickAndMortyApiResponse>(
-      'https://rickandmortyapi.com/api/character?page=1',
+    const response = await axios.get<ApiResponse>(
+      `${process.env.RICK_MORTY_API_URL}?page=1`,
     );
 
     const characters: CharacterRow[] = response.data.results

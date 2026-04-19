@@ -9,9 +9,11 @@ export interface CharacterFiltersInput {
 }
 
 export interface CharacterFilters {
+  name?: string;
   status?: CharacterStatus;
   species?: string;
   gender?: CharacterGender;
+  origin?: string;
 }
 
 export interface CharacterAttributes {

@@ -3,7 +3,13 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { SOFT_DELETE_CHARACTER } from '@/graphql/mutations';
 import type { Character } from '@/types/index';
+import type {
+  SoftDeleteCharacterData,
+  SoftDeleteCharacterVars,
+} from '@/types/graphql.types';
 import { StatusBadge } from '@/components/StatusBadge';
+import { useAuth } from '@/context/AuthContext';
+import { useError } from '@/context/ErrorContext';
 
 interface CharacterCardProps {
   character: Character;
@@ -14,21 +20,34 @@ export const CharacterCard = React.memo(function CharacterCard({
   character,
   onDelete,
 }: CharacterCardProps) {
+  const { user } = useAuth();
+  const { showError } = useError();
+
   const [softDelete, { loading: deleting }] = useMutation<
-    { softDeleteCharacter: boolean },
-    { id: number }
+    SoftDeleteCharacterData,
+    SoftDeleteCharacterVars
   >(SOFT_DELETE_CHARACTER);
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!user) {
+      showError('Login required to delete characters', 'auth');
+      return;
+    }
+
     const confirmed = window.confirm(`Delete ${character.name}?`);
     if (!confirmed) return;
 
     try {
-      await softDelete({ variables: { id: character.id } });
+      await softDelete({ variables: { id: character.id, userId: user.id } });
       onDelete(character.id);
-    } catch {}
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to delete character';
+      showError(message);
+    }
   };
 
   return (

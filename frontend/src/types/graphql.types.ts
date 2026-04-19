@@ -65,3 +65,14 @@ export interface CreateUserVars {
   name: string;
   role: Role;
 }
+
+// ── Soft Delete ───────────────────────────────────────────────────────────────
+
+export interface SoftDeleteCharacterData {
+  softDeleteCharacter: boolean;
+}
+
+export interface SoftDeleteCharacterVars {
+  id: number;
+  userId: number;
+}

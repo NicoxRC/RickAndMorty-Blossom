@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
+
 import { CharacterCard } from '@/components/CharacterCard';
 import { GET_CHARACTERS } from '@/graphql/queries';
 import { useAuth } from '@/context/AuthContext';
+
 import type {
   Character,
   CharacterStatus,

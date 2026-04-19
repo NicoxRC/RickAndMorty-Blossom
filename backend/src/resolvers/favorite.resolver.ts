@@ -18,7 +18,7 @@ export const favoriteResolvers = {
         if (!user) {
           throw new GraphQLError('User not found');
         }
-        return await favoriteService.toggleFavorite(characterId, userId);
+        return await favoriteService.toggleFavorite(userId, characterId);
       } catch (err) {
         throw new GraphQLError(
           err instanceof Error ? err.message : 'Failed to toggle favorite',

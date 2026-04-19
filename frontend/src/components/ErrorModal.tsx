@@ -1,7 +1,7 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
+
 import { useError } from '@/context/ErrorContext';
 import { UserModal } from '@/components/UserModal';
-import { useState } from 'react';
 
 function IconWarning() {
   return (
@@ -175,7 +175,10 @@ export function ErrorModal() {
 
       <UserModal
         isOpen={isUserModalOpen}
-        onClose={() => { setIsUserModalOpen(false); clearError(); }}
+        onClose={() => {
+          setIsUserModalOpen(false);
+          clearError();
+        }}
       />
     </>
   );

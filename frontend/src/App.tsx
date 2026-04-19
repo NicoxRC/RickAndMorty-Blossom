@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { ErrorProvider } from '@/context/ErrorContext';
 import { UserModal } from '@/components/UserModal';

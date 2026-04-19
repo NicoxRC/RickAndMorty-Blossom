@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
+
 import { GET_USER_BY_NAME } from '@/graphql/queries';
 import { CREATE_USER } from '@/graphql/mutations';
 import { useAuth } from '@/context/AuthContext';
+
 import type {
   GetUserByNameData,
   GetUserByNameVars,

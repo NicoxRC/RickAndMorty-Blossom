@@ -1,15 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+
+import { StatusBadge } from '@/components/StatusBadge';
 import { SOFT_DELETE_CHARACTER } from '@/graphql/mutations';
+import { useAuth } from '@/context/AuthContext';
+import { useError } from '@/context/ErrorContext';
+
 import type { Character } from '@/types/index';
 import type {
   SoftDeleteCharacterData,
   SoftDeleteCharacterVars,
 } from '@/types/graphql.types';
-import { StatusBadge } from '@/components/StatusBadge';
-import { useAuth } from '@/context/AuthContext';
-import { useError } from '@/context/ErrorContext';
 
 interface CharacterCardProps {
   character: Character;

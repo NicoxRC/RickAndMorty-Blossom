@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
+
+import { StatusBadge } from '@/components/StatusBadge';
 import { GET_CHARACTER_DETAIL } from '@/graphql/queries';
 import { TOGGLE_FAVORITE, ADD_COMMENT } from '@/graphql/mutations';
+import { useAuth } from '@/context/AuthContext';
+import { useError } from '@/context/ErrorContext';
+
 import type {
   GetCharacterDetailData,
   GetCharacterDetailVars,
@@ -11,9 +16,6 @@ import type {
   AddCommentData,
   AddCommentVars,
 } from '@/types/index';
-import { StatusBadge } from '@/components/StatusBadge';
-import { useAuth } from '@/context/AuthContext';
-import { useError } from '@/context/ErrorContext';
 
 function formatDate(value: string): string {
   const ms = Number(value);
@@ -98,7 +100,13 @@ export function CharacterDetailPage() {
     e.preventDefault();
     const trimmed = commentText.trim();
     if (!trimmed) return;
-    void addComment({ variables: { characterId, content: trimmed, ...(user ? { userId: user.id } : {}) } });
+    void addComment({
+      variables: {
+        characterId,
+        content: trimmed,
+        ...(user ? { userId: user.id } : {}),
+      },
+    });
   };
 
   if (loading) {
@@ -181,9 +189,7 @@ export function CharacterDetailPage() {
             type="button"
             onClick={handleToggleFavorite}
             aria-label={
-              isFavorite
-                ? 'Remove from favorites'
-                : 'Add to favorites'
+              isFavorite ? 'Remove from favorites' : 'Add to favorites'
             }
             className="absolute top-4 right-4 flex items-center justify-center w-10 h-10 rounded-xl
               bg-zinc-900/80 border border-zinc-700 backdrop-blur-sm

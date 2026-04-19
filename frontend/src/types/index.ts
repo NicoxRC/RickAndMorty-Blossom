@@ -13,4 +13,6 @@ export type {
   AddCommentVars,
   GetUserByNameData,
   GetUserByNameVars,
+  CreateUserData,
+  CreateUserVars,
 } from './graphql.types';

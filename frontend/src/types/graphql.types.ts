@@ -2,7 +2,7 @@ import type { Character } from './character.types';
 import type { CharacterFiltersInput } from './character.types';
 import type { Comment } from './comment.types';
 import type { ToggleFavoriteResult } from './favorite.types';
-import type { User } from './user.types';
+import type { Role, User } from './user.types';
 
 // ── Characters ───────────────────────────────────────────────────────────────
 
@@ -55,4 +55,13 @@ export interface GetUserByNameData {
 
 export interface GetUserByNameVars {
   name: string;
+}
+
+export interface CreateUserData {
+  createUser: User;
+}
+
+export interface CreateUserVars {
+  name: string;
+  role: Role;
 }

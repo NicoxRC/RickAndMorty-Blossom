@@ -5,10 +5,12 @@ import { favoriteService } from '@/services/favorite.service';
 import { commentService } from '@/services/comment.service';
 
 import type { Character, Comment } from '@/models';
+import { User } from '@/models';
 import type {
   CharacterFilters,
   CharacterFiltersInput,
 } from '@/types/character.types';
+import { Role } from '@/types/user.types';
 
 export const characterResolvers = {
   Query: {
@@ -51,9 +53,18 @@ export const characterResolvers = {
   Mutation: {
     softDeleteCharacter: async (
       _: unknown,
-      { id }: { id: number },
+      { id, userId }: { id: number; userId: number },
     ): Promise<boolean> => {
       try {
+        const user = await User.findByPk(userId);
+        if (!user) {
+          throw new GraphQLError('User not found');
+        }
+        if (user.role !== Role.ADMIN) {
+          throw new GraphQLError(
+            'Forbidden: only users with role ADMIN can delete characters',
+          );
+        }
         const character = await characterService.getCharacterById(id);
         if (!character) {
           throw new GraphQLError('Character not found');
